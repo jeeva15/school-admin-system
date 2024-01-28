@@ -1,6 +1,6 @@
 import { ArrayMinSize, IsEmail, IsNotEmpty } from 'class-validator';
 
-export class StudentRegister {
+export class RegisterStudentRequest {
   @IsNotEmpty()
   @IsEmail()
   teacher: string;
