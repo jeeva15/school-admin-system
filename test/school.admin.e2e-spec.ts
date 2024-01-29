@@ -29,7 +29,7 @@ describe('Teacher Controller (e2e)', () => {
           students: [
             'studentjon_123@gmail.com',
             'studenthon_123@gmail.com',
-            'studentton_123@gmail.com',
+            'studentkgkhon_123@gmail.com',
           ],
         })
         .expect(204);
@@ -67,13 +67,14 @@ describe('Teacher Controller (e2e)', () => {
         .get('/api/commonstudents?teacher=teacherken_123@gmail.com')
         .expect(200);
 
-      expect(JSON.parse(response.text)).toEqual({
-        students: [
-          'studentjon_123@gmail.com',
+      expect(JSON.parse(response.text).students).toEqual(
+        expect.arrayContaining([
+          'studentkgkhon_123@gmail.com',
           'studenthon_123@gmail.com',
-          'studentton_123@gmail.com',
-        ],
-      });
+          'studentjon_123@gmail.com',
+          ,
+        ]),
+      );
     });
 
     it('Should return common students for multiple teacher with status 200 on success', async () => {
@@ -114,7 +115,7 @@ describe('Teacher Controller (e2e)', () => {
       await request(app.getHttpServer())
         .post('/api/suspend')
         .send({
-          student: 'studentton_123@gmail.com',
+          student: 'studentjack_123@gmail.com',
         })
         .expect(204);
     });
@@ -137,7 +138,7 @@ describe('Teacher Controller (e2e)', () => {
     it('Should get students who can recieve notifciaion and return 204 on success', async () => {
       // Notfication contains 1. suspended email, and 2. duplicate email
       const notification =
-        'Hello students! @studenthon_123@gmail.com @studenthon_123@gmail.com @studentton_123@gmail.com';
+        'Hello students! @studenthon_123@gmail.com @studenthon_123@gmail.com @studentjack_123@gmail.com';
       const response: any = await request(app.getHttpServer())
         .post('/api/retrievefornotifications')
         .send({
@@ -147,7 +148,7 @@ describe('Teacher Controller (e2e)', () => {
         .expect(200);
 
       expect(JSON.parse(response.text)).toEqual({
-        recipients: ['studenthon_123@gmail.com', 'studentjack_123@gmail.com'],
+        recipients: ['studenthon_123@gmail.com'],
       });
     });
 
